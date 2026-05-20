@@ -1,0 +1,22 @@
+workflows:
+  android-build:
+    name: Android APK Build
+    instance_type: mac_mini_m1
+    environment:
+      flutter: stable
+      vars:
+        ANDROID_NDK_VERSION: "27.0.12077973"
+    cache:
+      cache_paths:
+        - $HOME/.gradle/caches
+    scripts:
+      - name: Install Android NDK
+        script: |
+          echo y | sdkmanager "ndk;$ANDROID_NDK_VERSION"
+      - name: Clean and build APK
+        script: |
+          flutter clean
+          flutter pub get
+          flutter build apk --release
+    artifacts:
+      - build/app/outputs/flutter-apk/*.apk

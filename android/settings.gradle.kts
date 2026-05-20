@@ -9,6 +9,9 @@ pluginManagement {
         if (sdkPath != null) return@run sdkPath
         val envSdkPath = System.getenv("FLUTTER_ROOT")
         if (envSdkPath != null) return@run envSdkPath
+        listOf("/flutter", "/opt/flutter", "/home/user/flutter").forEach { path ->
+            if (java.io.File(path).exists()) return@run path
+        }
         throw GradleException("Flutter SDK not found")
     }
 
@@ -21,10 +24,14 @@ pluginManagement {
     }
 }
 
-plugins {
-    id("com.android.application") version "8.9.1" apply false
-    id("org.jetbrains.kotlin.android") version "1.9.24" apply false
-    id("dev.flutter.flutter-gradle-plugin") version "1.0.0" apply false
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
+    repositories {
+        google()
+        mavenCentral()
+        maven { url = uri("https://storage.googleapis.com/download.flutter.io") }
+    }
 }
 
+rootProject.name = "hymn_app_clean"
 include(":app")
