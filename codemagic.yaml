@@ -4,16 +4,8 @@ workflows:
     instance_type: mac_mini_m1
     environment:
       flutter: stable
-      vars:
-        ANDROID_NDK_VERSION: "27.0.12077973"
-    cache:
-      cache_paths:
-        - $HOME/.gradle/caches
     scripts:
-      - name: Install Android NDK
-        script: |
-          echo y | sdkmanager "ndk;$ANDROID_NDK_VERSION"
-      - name: Clean and build APK
+      - name: Build APK
         script: |
           flutter clean
           flutter pub get
